@@ -1,0 +1,13 @@
+{
+  "name": "bash",
+  "version": "1.0.0",
+  "description": "This repository documents my journey from Full Stack Developer to DevOps Engineer. It contains automation scripts, infrastructure-as-code configurations, and deployment logs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'Building the app...' && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
