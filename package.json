@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'Building the app...' && exit 0"
+    "build": "echo 'OH NO! THE BUILD CRASHED' && exit 1"
   },
   "keywords": [],
   "author": "",
