@@ -14,17 +14,20 @@ echo "⬇️  Pulling latest image..."
 docker pull $IMAGE_NAME
 
 # 2. Check if a container is already running
-if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
     echo "🛑 Stopping existing container..."
-    docker stop $CONTAINER_NAME
-    docker rm $CONTAINER_NAME
+    docker stop $CONTAINER_NAME || true
+    docker rm $CONTAINER_NAME || true
 fi
 
 # 3. Run the new version
 echo "🚀 Starting new container..."
 docker run -d \
   --name $CONTAINER_NAME \
+  --restart always \
   -p $PORT:3000 \
   $IMAGE_NAME
 
 echo "✅ Deployment Successful! App is running on http://localhost:$PORT"
+
+

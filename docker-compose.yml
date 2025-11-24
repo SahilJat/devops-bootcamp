@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # --- THE APPLICATION CLUSTER ---
+  web-app:
+    image: mashidodevelop/devops-bootcamp:latest  # <--- CHANGE THIS!
+    deploy:
+      replicas: 3  # <--- GOD MODE: Create 3 copies instantly!
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  # --- THE TRAFFIC COP (NGINX) ---
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"  # Public Access
+    volumes:
+      - ./nginx-conf/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web-app  # Don't start Nginx until the apps are ready
+    networks:
+      - app-network
+
+# --- THE PRIVATE NETWORK ---
+networks:
+  app-network:
+    driver: bridge
