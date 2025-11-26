@@ -22,10 +22,10 @@ Created a script to automate the initialization of project environments.
 #### **3. The "Local Cloud" (Docker Simulation)**
 Simulated an AWS EC2 environment locally using Docker to practice server provisioning without cloud costs.
 - **Command Used:**
-```basgh
+  ```bash
   docker run -dt --name my-production-server -p 8080:3000 ubuntu:latest
 
-Provisioning:
+- **Provisioning:**
 
         Manually installed Node.js v20, Git, and Curl inside the raw Ubuntu container.
 
@@ -35,7 +35,7 @@ Provisioning:
 
 Issue: npm install failed with EAI_AGAIN (DNS Error) inside the Docker container.
 
-    Root Cause: The container could not resolve registry.npmjs.org due to missing DNS configurations in WSL/Docker.
+   Root Cause: The container could not resolve registry.npmjs.org due to missing DNS configurations in WSL/Docker.
 
     Solution: Manually patched the DNS resolver:
     Bash

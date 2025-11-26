@@ -30,3 +30,6 @@ logs/
 # --- IDE Settings ---
 .vscode/
 .idea/
+.terraform/
+*.tfstate
+*.tfstate.backup
