@@ -1,6 +1,6 @@
 # 🚀 DevOps Engineer Roadmap (3-Month Journey)
 
-This repository documents my journey from Full Stack Developer to DevOps Engineer. It contains automation scripts, infrastructure-as-code configurations, and deployment logs.
+This repository documents my intensive journey from Full Stack Developer to DevOps Engineer. It contains automation scripts, infrastructure-as-code configurations, CI/CD pipelines, and Python automation tools.
 
 ## 📅 Daily Progress Log
 
@@ -25,7 +25,7 @@ Simulated an AWS EC2 environment locally using Docker to practice server provisi
   ```bash
   docker run -dt --name my-production-server -p 8080:3000 ubuntu:latest
 
-- **Provisioning:**
+Provisioning:
 
         Manually installed Node.js v20, Git, and Curl inside the raw Ubuntu container.
 
@@ -35,7 +35,7 @@ Simulated an AWS EC2 environment locally using Docker to practice server provisi
 
 Issue: npm install failed with EAI_AGAIN (DNS Error) inside the Docker container.
 
-   Root Cause: The container could not resolve registry.npmjs.org due to missing DNS configurations in WSL/Docker.
+    Root Cause: The container could not resolve registry.npmjs.org due to missing DNS configurations in WSL/Docker.
 
     Solution: Manually patched the DNS resolver:
     Bash
@@ -43,47 +43,100 @@ Issue: npm install failed with EAI_AGAIN (DNS Error) inside the Docker container
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
 Outcome: Successfully deployed the application, accessible via http://localhost:8080.
+Day 2: CI/CD Pipeline Automation
 
----
+Goal: Eliminate manual testing and deployment by implementing a continuous integration pipeline.
 
-### **Day 2: CI/CD Pipeline Automation**
-**Goal:** Eliminate manual testing and deployment by implementing a continuous integration pipeline.
+1. GitHub Actions Workflow (ci.yml)
 
-#### **1. GitHub Actions Workflow (`ci.yml`)**
-Built a dual-stage pipeline triggered on `push` to main.
-- **Job 1: Build & Test**
-  - Automates `npm install` and `npm run build` on a fresh Ubuntu runner.
-  - acts as a Quality Gate: If the build fails, the deployment is blocked.
-- **Job 2: Docker Delivery**
-  - Authenticates with Docker Hub using **GitHub Secrets** (Secure credential management).
-  - Builds the Docker image and pushes it to the registry (`<your-username>/devops-bootcamp`).
+Built a dual-stage pipeline triggered on push to main.
 
-#### **2. Pipeline Optimization**
-- **Smart Triggers:** Implemented `paths-ignore` to prevent the pipeline from running on documentation changes (`*.md`), saving build minutes.
-- **Build Context Optimization:** Created a `.dockerignore` file to exclude `node_modules` and `.git`, reducing image build context from ~200MB to <1MB.
+    Job 1: Build & Test
 
----
+        Automates npm install and npm run build on a fresh Ubuntu runner.
 
-### **Day 3: Deployment, Orchestration & Load Balancing**
-**Goal:** Simulate a production-grade cloud deployment with fault tolerance and scalability.
+        Acts as a Quality Gate: If the build fails, the deployment is blocked.
 
-#### **1. Automated Deployment Script (`deploy.sh`)**
+    Job 2: Docker Delivery
+
+        Authenticates with Docker Hub using GitHub Secrets (Secure credential management).
+
+        Builds the Docker image and pushes it to the registry (<your-username>/devops-bootcamp).
+
+2. Pipeline Optimization
+
+    Smart Triggers: Implemented paths-ignore to prevent the pipeline from running on documentation changes (*.md), saving build minutes.
+
+    Build Context Optimization: Created a .dockerignore file to exclude node_modules and .git, reducing image build context from ~200MB to <1MB.
+
+Day 3: Deployment, Orchestration & Load Balancing
+
+Goal: Simulate a production-grade cloud deployment with fault tolerance and scalability.
+
+1. Automated Deployment Script (deploy.sh)
+
 Created a shell script to simulate a "Blue/Green" style deployment on a server.
-- **Features:**
-  - Pulls the latest image from Docker Hub.
-  - Gracefully stops and removes conflicting containers.
-  - Implements `--restart always` policy to ensure the app survives server reboots.
 
-#### **2. Reverse Proxy Implementation (Nginx)**
-- Deployed Nginx as a gateway to hide the application port (3000) behind standard HTTP (80).
-- Configured custom routing in `nginx-conf/default.conf` using Docker's internal DNS resolution.
+    Features:
 
-#### **3. Orchestration & Load Balancing**
-- **Tool:** Docker Compose (`docker-compose.yml`).
-- **Architecture:** 3-Tier Microservices (Client -> Proxy -> App Cluster).
-- **High Availability:**
-  - Scaled the application to **3 Replicas** using `docker compose up --scale web-app=3`.
-  - Verified **Round-Robin Load Balancing** where Nginx distributes traffic across all 3 containers.
-  - Tested **Fault Tolerance** by manually killing containers and verifying zero downtime.
+        Pulls the latest image from Docker Hub.
 
----
+        Gracefully stops and removes conflicting containers.
+
+        Implements --restart always policy to ensure the app survives server reboots.
+
+2. Reverse Proxy Implementation (Nginx)
+
+    Deployed Nginx as a gateway to hide the application port (3000) behind standard HTTP (80).
+
+    Configured custom routing in nginx-conf/default.conf using Docker's internal DNS resolution.
+
+3. Orchestration & Load Balancing
+
+    Tool: Docker Compose (docker-compose.yml).
+
+    Architecture: 3-Tier Microservices (Client -> Proxy -> App Cluster).
+
+    High Availability:
+
+        Scaled the application to 3 Replicas using docker compose up --scale web-app=3.
+
+        Verified Round-Robin Load Balancing where Nginx distributes traffic across all 3 containers.
+
+        Tested Fault Tolerance by manually killing containers and verifying zero downtime.
+
+Gap Week: Infrastructure as Code & Automation (Local)
+
+Goal: Mastering Terraform syntax and Python scripting before Cloud Access.
+
+1. Terraform Simulation (terraform-lab/)
+
+    Infrastructure: Deployed Nginx containers using the kreuzwerker/docker provider (simulating EC2).
+
+    Modular Architecture: Refactored hardcoded resources into reusable Terraform Modules (modules/web_server).
+
+    State Management: Experimented with State Drift detection and auto-healing.
+
+    Logic: Implemented variables.tf for dynamic configuration and outputs.tf for reporting connection details.
+
+2. Python Automation (python-lab/)
+
+    Log Parser: Built a script to scan server logs for [ERROR] tags and trigger exit codes for CI/CD pipelines.
+
+    System Health: Created a disk usage monitor using the shutil library.
+
+    API Consumer: Wrote a script using requests to fetch and parse User Data from the GitHub API.
+
+🛠 Tools & Technologies Used
+
+    OS: Ubuntu Linux (Zsh + Powerlevel10k)
+
+    Containerization: Docker, Docker Compose
+
+    CI/CD: GitHub Actions
+
+    IaC: Terraform
+
+    Scripting: Bash, Python
+
+    Web Server: Nginx
