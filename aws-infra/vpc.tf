@@ -57,3 +57,13 @@ resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public_rt.id
 }
+# Secondary Private Subnet (For High Availability)
+resource "aws_subnet" "private_b" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "ap-south-1b"  # <--- Note the 'b'
+
+  tags = {
+    Name = "private-subnet-b"
+  }
+}
